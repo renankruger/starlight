@@ -1,0 +1,1884 @@
+{
+    "nodeType": "Folder",
+    "files": [
+        {
+            "nodeType": "File",
+            "fileName": "deposit",
+            "fileId": 53,
+            "fileExtension": ".zok",
+            "nodes": [
+                {
+                    "nodeType": "ImportStatementList",
+                    "imports": [
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "mapping",
+                            "name": "balances_msgSender_0",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount",
+                            "mappingName": "balances",
+                            "mappingKeyName": "msgSender"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "mapping",
+                            "name": "balances_msgSender_1",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount",
+                            "mappingName": "balances",
+                            "mappingKeyName": "msgSender"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "mapping",
+                            "name": "balances_msgSender_0",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount",
+                            "mappingName": "balances",
+                            "mappingKeyName": "msgSender"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "newCommitment",
+                            "name": "balances_msgSender_0",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        }
+                    ]
+                },
+                {
+                    "nodeType": "FunctionDefinition",
+                    "name": "main",
+                    "body": {
+                        "nodeType": "Block",
+                        "preStatements": [
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "newCommitment",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            }
+                        ],
+                        "statements": [
+                            {
+                                "nodeType": "BoilerplateStatement",
+                                "bpSection": "statements",
+                                "bpType": "incrementation",
+                                "name": "balances_msg",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "addend": {
+                                    "nodeType": "Identifier",
+                                    "name": "amount",
+                                    "typeName": {
+                                        "nodeType": "ElementaryTypeName",
+                                        "name": "uint256"
+                                    }
+                                }
+                            }
+                        ],
+                        "postStatements": [
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "newCommitment",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            }
+                        ]
+                    },
+                    "parameters": {
+                        "nodeType": "ParameterList",
+                        "parameters": [
+                            {
+                                "nodeType": "VariableDeclaration",
+                                "name": "amount",
+                                "isPrivate": false,
+                                "interactsWithSecret": true,
+                                "declarationType": "parameter",
+                                "typeName": {
+                                    "nodeType": "ElementaryTypeName",
+                                    "name": "field"
+                                }
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "newCommitment",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            }
+                        ]
+                    },
+                    "returnParameters": {
+                        "nodeType": "ParameterList",
+                        "parameters": []
+                    }
+                }
+            ]
+        },
+        {
+            "nodeType": "File",
+            "fileName": "transfer",
+            "fileId": 74,
+            "fileExtension": ".zok",
+            "nodes": [
+                {
+                    "nodeType": "ImportStatementList",
+                    "imports": [
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "mapping",
+                            "name": "balances_msgSender_0",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount",
+                            "mappingName": "balances",
+                            "mappingKeyName": "msgSender"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "mapping",
+                            "name": "balances_msgSender_1",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount",
+                            "mappingName": "balances",
+                            "mappingKeyName": "msgSender"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "mapping",
+                            "name": "balances_msgSender_2",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount",
+                            "mappingName": "balances",
+                            "mappingKeyName": "msgSender"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "PoKoSK",
+                            "name": "balances_msgSender_0",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "PoKoSK",
+                            "name": "balances_msgSender_1",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "nullification",
+                            "name": "balances_msgSender_0",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "nullification",
+                            "name": "balances_msgSender_1",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "oldCommitmentPreimage",
+                            "name": "balances_msgSender_0",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "oldCommitmentPreimage",
+                            "name": "balances_msgSender_1",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "oldCommitmentExistence",
+                            "name": "balances_msgSender_0",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "oldCommitmentExistence",
+                            "name": "balances_msgSender_1",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "newCommitment",
+                            "name": "balances_msgSender_2",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "mapping",
+                            "name": "balances_recipient_0",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount",
+                            "mappingName": "balances",
+                            "mappingKeyName": "recipient"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "mapping",
+                            "name": "balances_recipient_1",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount",
+                            "mappingName": "balances",
+                            "mappingKeyName": "recipient"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "mapping",
+                            "name": "balances_recipient_0",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount",
+                            "mappingName": "balances",
+                            "mappingKeyName": "recipient"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "newCommitment",
+                            "name": "balances_recipient_0",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "encryption",
+                            "name": "balances_recipient_0",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        }
+                    ]
+                },
+                {
+                    "nodeType": "FunctionDefinition",
+                    "name": "main",
+                    "body": {
+                        "nodeType": "Block",
+                        "preStatements": [
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_2",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "PoKoSK",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "PoKoSK",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "nullification",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "nullification",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "oldCommitmentPreimage",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "oldCommitmentPreimage",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "oldCommitmentExistence",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "oldCommitmentExistence",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "newCommitment",
+                                "name": "balances_msgSender_2",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "mapping",
+                                "name": "balances_recipient_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "recipient"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "mapping",
+                                "name": "balances_recipient_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "recipient"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "mapping",
+                                "name": "balances_recipient_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "recipient"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "newCommitment",
+                                "name": "balances_recipient_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "encryption",
+                                "name": "balances_recipient_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            }
+                        ],
+                        "statements": [
+                            {
+                                "nodeType": "BoilerplateStatement",
+                                "bpSection": "statements",
+                                "bpType": "decrementation",
+                                "name": "balances_msg",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "subtrahend": {
+                                    "nodeType": "Identifier",
+                                    "name": "amount",
+                                    "typeName": {
+                                        "nodeType": "ElementaryTypeName",
+                                        "name": "uint256"
+                                    }
+                                }
+                            },
+                            {
+                                "nodeType": "BoilerplateStatement",
+                                "bpSection": "statements",
+                                "bpType": "incrementation",
+                                "name": "balances_recipient",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "addend": {
+                                    "nodeType": "Identifier",
+                                    "name": "amount",
+                                    "typeName": {
+                                        "nodeType": "ElementaryTypeName",
+                                        "name": "uint256"
+                                    }
+                                }
+                            }
+                        ],
+                        "postStatements": [
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_2",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "PoKoSK",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "PoKoSK",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "nullification",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "nullification",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "oldCommitmentPreimage",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "oldCommitmentPreimage",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "oldCommitmentExistence",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "oldCommitmentExistence",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "newCommitment",
+                                "name": "balances_msgSender_2",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "mapping",
+                                "name": "balances_recipient_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "recipient"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "mapping",
+                                "name": "balances_recipient_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "recipient"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "mapping",
+                                "name": "balances_recipient_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "recipient"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "newCommitment",
+                                "name": "balances_recipient_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "encryption",
+                                "name": "balances_recipient_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            }
+                        ]
+                    },
+                    "parameters": {
+                        "nodeType": "ParameterList",
+                        "parameters": [
+                            {
+                                "nodeType": "VariableDeclaration",
+                                "name": "recipient",
+                                "isPrivate": true,
+                                "interactsWithSecret": true,
+                                "declarationType": "parameter",
+                                "typeName": {
+                                    "nodeType": "ElementaryTypeName",
+                                    "name": "field"
+                                }
+                            },
+                            {
+                                "nodeType": "VariableDeclaration",
+                                "name": "amount",
+                                "isPrivate": true,
+                                "interactsWithSecret": true,
+                                "declarationType": "parameter",
+                                "typeName": {
+                                    "nodeType": "ElementaryTypeName",
+                                    "name": "field"
+                                }
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_2",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "PoKoSK",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "PoKoSK",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "nullification",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "nullification",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "oldCommitmentPreimage",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "oldCommitmentPreimage",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "oldCommitmentExistence",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "oldCommitmentExistence",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "newCommitment",
+                                "name": "balances_msgSender_2",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "mapping",
+                                "name": "balances_recipient_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "recipient"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "mapping",
+                                "name": "balances_recipient_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "recipient"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "mapping",
+                                "name": "balances_recipient_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "recipient"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "newCommitment",
+                                "name": "balances_recipient_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "encryption",
+                                "name": "balances_recipient_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            }
+                        ]
+                    },
+                    "returnParameters": {
+                        "nodeType": "ParameterList",
+                        "parameters": [
+                            {
+                                "nodeType": "VariableDeclaration",
+                                "name": "balances_recipient",
+                                "isPrivate": false,
+                                "typeName": {
+                                    "nodeType": "ElementaryTypeName",
+                                    "name": "EncryptedMsgs<3>"
+                                },
+                                "isPartitioned": true
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        {
+            "nodeType": "File",
+            "fileName": "joinCommitments",
+            "fileId": 74,
+            "fileExtension": ".zok",
+            "nodes": []
+        },
+        {
+            "nodeType": "File",
+            "fileName": "withdraw",
+            "fileId": 101,
+            "fileExtension": ".zok",
+            "nodes": [
+                {
+                    "nodeType": "ImportStatementList",
+                    "imports": [
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "mapping",
+                            "name": "balances_msgSender_0",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount",
+                            "mappingName": "balances",
+                            "mappingKeyName": "msgSender"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "mapping",
+                            "name": "balances_msgSender_1",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount",
+                            "mappingName": "balances",
+                            "mappingKeyName": "msgSender"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "mapping",
+                            "name": "balances_msgSender_2",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount",
+                            "mappingName": "balances",
+                            "mappingKeyName": "msgSender"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "PoKoSK",
+                            "name": "balances_msgSender_0",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "PoKoSK",
+                            "name": "balances_msgSender_1",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "nullification",
+                            "name": "balances_msgSender_0",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "nullification",
+                            "name": "balances_msgSender_1",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "oldCommitmentPreimage",
+                            "name": "balances_msgSender_0",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "oldCommitmentPreimage",
+                            "name": "balances_msgSender_1",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "oldCommitmentExistence",
+                            "name": "balances_msgSender_0",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "oldCommitmentExistence",
+                            "name": "balances_msgSender_1",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        },
+                        {
+                            "nodeType": "Boilerplate",
+                            "bpSection": "importStatements",
+                            "bpType": "newCommitment",
+                            "name": "balances_msgSender_2",
+                            "id": 6,
+                            "isPartitioned": true,
+                            "isNullified": true,
+                            "isMapping": true,
+                            "initialisationRequired": true,
+                            "newCommitmentValue": "amount"
+                        }
+                    ]
+                },
+                {
+                    "nodeType": "FunctionDefinition",
+                    "name": "main",
+                    "body": {
+                        "nodeType": "Block",
+                        "preStatements": [
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_2",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "PoKoSK",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "PoKoSK",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "nullification",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "nullification",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "oldCommitmentPreimage",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "oldCommitmentPreimage",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "oldCommitmentExistence",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "oldCommitmentExistence",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "preStatements",
+                                "bpType": "newCommitment",
+                                "name": "balances_msgSender_2",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            }
+                        ],
+                        "statements": [
+                            {
+                                "nodeType": "BoilerplateStatement",
+                                "bpSection": "statements",
+                                "bpType": "decrementation",
+                                "name": "balances_msg",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isMapping": true,
+                                "subtrahend": {
+                                    "nodeType": "Identifier",
+                                    "name": "amount",
+                                    "typeName": {
+                                        "nodeType": "ElementaryTypeName",
+                                        "name": "uint256"
+                                    }
+                                }
+                            }
+                        ],
+                        "postStatements": [
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_2",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "PoKoSK",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "PoKoSK",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "nullification",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "nullification",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "oldCommitmentPreimage",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "oldCommitmentPreimage",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "oldCommitmentExistence",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "oldCommitmentExistence",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "postStatements",
+                                "bpType": "newCommitment",
+                                "name": "balances_msgSender_2",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            }
+                        ]
+                    },
+                    "parameters": {
+                        "nodeType": "ParameterList",
+                        "parameters": [
+                            {
+                                "nodeType": "VariableDeclaration",
+                                "name": "amount",
+                                "isPrivate": false,
+                                "interactsWithSecret": true,
+                                "declarationType": "parameter",
+                                "typeName": {
+                                    "nodeType": "ElementaryTypeName",
+                                    "name": "field"
+                                }
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "mapping",
+                                "name": "balances_msgSender_2",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount",
+                                "mappingName": "balances",
+                                "mappingKeyName": "msgSender"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "PoKoSK",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "PoKoSK",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "nullification",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "nullification",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "oldCommitmentPreimage",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "oldCommitmentPreimage",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "oldCommitmentExistence",
+                                "name": "balances_msgSender_0",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "oldCommitmentExistence",
+                                "name": "balances_msgSender_1",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            },
+                            {
+                                "nodeType": "Boilerplate",
+                                "bpSection": "parameters",
+                                "bpType": "newCommitment",
+                                "name": "balances_msgSender_2",
+                                "id": 6,
+                                "isPartitioned": true,
+                                "isNullified": true,
+                                "isMapping": true,
+                                "initialisationRequired": true,
+                                "newCommitmentValue": "amount"
+                            }
+                        ]
+                    },
+                    "returnParameters": {
+                        "nodeType": "ParameterList",
+                        "parameters": []
+                    }
+                }
+            ]
+        }
+    ]
+}

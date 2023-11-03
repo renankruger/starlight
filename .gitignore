@@ -4,5 +4,4 @@ build/
 built/
 node_modules/
 proving-files/
-zapps/
 test-zapps/
