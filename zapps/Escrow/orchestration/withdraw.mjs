@@ -1,386 +1,380 @@
 /* eslint-disable prettier/prettier, camelcase, prefer-const, no-unused-vars */
-import config from "config";
-import utils from "zkp-utils";
-import GN from "general-number";
-import fs from "fs";
+import config from 'config';
+import utils from 'zkp-utils';
+import GN from 'general-number';
+import fs from 'fs';
+import { join } from 'path';
+import { URL } from 'url';
 
 import {
-	getContractInstance,
-	getContractAddress,
-	registerKey,
-} from "./common/contract.mjs";
+  getContractInstance,
+  getContractAddress,
+  registerKey,
+} from './common/contract.mjs';
 import {
-	storeCommitment,
-	getCurrentWholeCommitment,
-	getCommitmentsById,
-	getAllCommitments,
-	getInputCommitments,
-	joinCommitments,
-	markNullified,
-	getnullifierMembershipWitness,
-	getupdatedNullifierPaths,
-	temporaryUpdateNullifier,
-	updateNullifierTree,
-} from "./common/commitment-storage.mjs";
-import { generateProof } from "./common/zokrates.mjs";
-import { getMembershipWitness, getRoot } from "./common/timber.mjs";
-import Web3 from "./common/web3.mjs";
-import {
-	decompressStarlightKey,
-	poseidonHash,
-} from "./common/number-theory.mjs";
+  storeCommitment,
+  getCommitmentsById,
+  getInputCommitments,
+  joinCommitments,
+  markNullified,
+  getnullifierMembershipWitness,
+  getupdatedNullifierPaths,
+  temporaryUpdateNullifier,
+} from './common/commitment-storage.mjs';
+import { generateProof } from './common/zokrates.mjs';
+import { getMembershipWitness } from './common/timber.mjs';
+import { poseidonHash } from './common/number-theory.mjs';
 
 const { generalise } = GN;
-const db = "/app/orchestration/common/db/preimage.json";
-const web3 = Web3.connection();
-const keyDb = "/app/orchestration/common/db/key.json";
+const __dirname = new URL('.', import.meta.url).pathname;
+const keyDb = join(__dirname, 'common/db/key.json');
 
-export default async function withdraw(
-	_amount,
-	_balances_msgSender_newOwnerPublicKey = 0,
-	_balances_msgSender_0_oldCommitment = 0,
-	_balances_msgSender_1_oldCommitment = 0
-) {
-	// Initialisation of variables:
+export class WithdrawManager {
+  constructor(web3) {
+    this.web3 = web3;
+  }
 
-	const instance = await getContractInstance("EscrowShield");
+  async init() {
+    this.instance = await getContractInstance('EscrowShield');
+    this.contractAddr = await getContractAddress('EscrowShield');
+  }
+  async withdraw(
+    _amount,
+    _balances_msgSender_newOwnerPublicKey = 0,
+    _balances_msgSender_0_oldCommitment = 0,
+    _balances_msgSender_1_oldCommitment = 0,
+  ) {
+    const amount = generalise(_amount);
+    let balances_msgSender_newOwnerPublicKey = generalise(
+      _balances_msgSender_newOwnerPublicKey,
+    );
 
-	const contractAddr = await getContractAddress("EscrowShield");
+    // Read dbs for keys and previous commitment values:
+    if (!fs.existsSync(keyDb)) {
+      await registerKey(this.web3, utils.randomHex(31), 'EscrowShield', false);
+    }
 
-	const msgValue = 0;
-	const amount = generalise(_amount);
-	let balances_msgSender_newOwnerPublicKey = generalise(
-		_balances_msgSender_newOwnerPublicKey
-	);
+    const keys = JSON.parse(
+      fs.readFileSync(keyDb, 'utf-8', err => {
+        console.log(err);
+      }),
+    );
+    const secretKey = generalise(keys.secretKey);
+    const publicKey = generalise(keys.publicKey);
 
-	// Read dbs for keys and previous commitment values:
+    // read preimage for decremented state
+    balances_msgSender_newOwnerPublicKey =
+      _balances_msgSender_newOwnerPublicKey === 0
+        ? publicKey
+        : balances_msgSender_newOwnerPublicKey;
 
-	if (!fs.existsSync(keyDb))
-		await registerKey(utils.randomHex(31), "EscrowShield", false);
-	const keys = JSON.parse(
-		fs.readFileSync(keyDb, "utf-8", (err) => {
-			console.log(err);
-		})
-	);
-	const secretKey = generalise(keys.secretKey);
-	const publicKey = generalise(keys.publicKey);
+    let balances_msgSender_stateVarId = 6;
 
-	// read preimage for decremented state
+    const balances_msgSender_stateVarId_key = generalise(
+      config.web3.options.defaultAccount,
+    ); // emulates msg.sender
 
-	balances_msgSender_newOwnerPublicKey =
-		_balances_msgSender_newOwnerPublicKey === 0
-			? publicKey
-			: balances_msgSender_newOwnerPublicKey;
+    balances_msgSender_stateVarId = generalise(
+      utils.mimcHash(
+        [
+          generalise(balances_msgSender_stateVarId).bigInt,
+          balances_msgSender_stateVarId_key.bigInt,
+        ],
+        'ALT_BN_254',
+      ),
+    ).hex(32);
 
-	let balances_msgSender_stateVarId = 6;
+    let balances_msgSender_preimage = await getCommitmentsById(
+      balances_msgSender_stateVarId,
+    );
 
-	const balances_msgSender_stateVarId_key = generalise(
-		config.web3.options.defaultAccount
-	); // emulates msg.sender
+    const balances_msgSender_newCommitmentValue = generalise(
+      parseInt(amount.integer, 10),
+    );
 
-	balances_msgSender_stateVarId = generalise(
-		utils.mimcHash(
-			[
-				generalise(balances_msgSender_stateVarId).bigInt,
-				balances_msgSender_stateVarId_key.bigInt,
-			],
-			"ALT_BN_254"
-		)
-	).hex(32);
+    // First check if required commitments exist or not
+    let [
+      balances_msgSender_commitmentFlag,
+      balances_msgSender_0_oldCommitment,
+      balances_msgSender_1_oldCommitment,
+    ] = getInputCommitments(
+      publicKey.hex(32),
+      balances_msgSender_newCommitmentValue.integer,
+      balances_msgSender_preimage,
+    );
 
-	let balances_msgSender_preimage = await getCommitmentsById(
-		balances_msgSender_stateVarId
-	);
+    let balances_msgSender_witness_0;
+    let balances_msgSender_witness_1;
 
-	const balances_msgSender_newCommitmentValue = generalise(
-		parseInt(amount.integer, 10)
-	);
-	// First check if required commitments exist or not
+    while (balances_msgSender_commitmentFlag === false) {
+      balances_msgSender_witness_0 = await getMembershipWitness(
+        'EscrowShield',
+        generalise(balances_msgSender_0_oldCommitment._id).integer,
+      );
 
-	let [
-		balances_msgSender_commitmentFlag,
-		balances_msgSender_0_oldCommitment,
-		balances_msgSender_1_oldCommitment,
-	] = getInputCommitments(
-		publicKey.hex(32),
-		balances_msgSender_newCommitmentValue.integer,
-		balances_msgSender_preimage
-	);
+      balances_msgSender_witness_1 = await getMembershipWitness(
+        'EscrowShield',
+        generalise(balances_msgSender_1_oldCommitment._id).integer,
+      );
 
-	let balances_msgSender_witness_0;
+      const tx = await joinCommitments(
+        'EscrowShield',
+        'balances',
+        secretKey,
+        publicKey,
+        [6, balances_msgSender_stateVarId_key],
+        [
+          balances_msgSender_0_oldCommitment,
+          balances_msgSender_1_oldCommitment,
+        ],
+        [balances_msgSender_witness_0, balances_msgSender_witness_1],
+        this.instance,
+        this.contractAddr,
+        this.web3,
+      );
 
-	let balances_msgSender_witness_1;
+      balances_msgSender_preimage = await getCommitmentsById(
+        balances_msgSender_stateVarId,
+      );
 
-	while (balances_msgSender_commitmentFlag === false) {
-		balances_msgSender_witness_0 = await getMembershipWitness(
-			"EscrowShield",
-			generalise(balances_msgSender_0_oldCommitment._id).integer
-		);
+      [
+        balances_msgSender_commitmentFlag,
+        balances_msgSender_0_oldCommitment,
+        balances_msgSender_1_oldCommitment,
+      ] = getInputCommitments(
+        publicKey.hex(32),
+        balances_msgSender_newCommitmentValue.integer,
+        balances_msgSender_preimage,
+      );
+    }
+    const balances_msgSender_0_prevSalt = generalise(
+      balances_msgSender_0_oldCommitment.preimage.salt,
+    );
+    const balances_msgSender_1_prevSalt = generalise(
+      balances_msgSender_1_oldCommitment.preimage.salt,
+    );
+    const balances_msgSender_0_prev = generalise(
+      balances_msgSender_0_oldCommitment.preimage.value,
+    );
+    const balances_msgSender_1_prev = generalise(
+      balances_msgSender_1_oldCommitment.preimage.value,
+    );
 
-		balances_msgSender_witness_1 = await getMembershipWitness(
-			"EscrowShield",
-			generalise(balances_msgSender_1_oldCommitment._id).integer
-		);
+    // Extract set membership witness:
 
-		const tx = await joinCommitments(
-			"EscrowShield",
-			"balances",
-			secretKey,
-			publicKey,
-			[6, balances_msgSender_stateVarId_key],
-			[balances_msgSender_0_oldCommitment, balances_msgSender_1_oldCommitment],
-			[balances_msgSender_witness_0, balances_msgSender_witness_1],
-			instance,
-			contractAddr,
-			web3
-		);
+    // generate witness for partitioned state
+    balances_msgSender_witness_0 = await getMembershipWitness(
+      'EscrowShield',
+      generalise(balances_msgSender_0_oldCommitment._id).integer,
+    );
+    balances_msgSender_witness_1 = await getMembershipWitness(
+      'EscrowShield',
+      generalise(balances_msgSender_1_oldCommitment._id).integer,
+    );
+    const balances_msgSender_0_index = generalise(
+      balances_msgSender_witness_0.index,
+    );
+    const balances_msgSender_1_index = generalise(
+      balances_msgSender_witness_1.index,
+    );
+    const balances_msgSender_root = generalise(
+      balances_msgSender_witness_0.root,
+    );
+    const balances_msgSender_0_path = generalise(
+      balances_msgSender_witness_0.path,
+    ).all;
+    const balances_msgSender_1_path = generalise(
+      balances_msgSender_witness_1.path,
+    ).all;
 
-		balances_msgSender_preimage = await getCommitmentsById(
-			balances_msgSender_stateVarId
-		);
+    // non-secret line would go here but has been filtered out
 
-		[
-			balances_msgSender_commitmentFlag,
-			balances_msgSender_0_oldCommitment,
-			balances_msgSender_1_oldCommitment,
-		] = getInputCommitments(
-			publicKey.hex(32),
-			balances_msgSender_newCommitmentValue.integer,
-			balances_msgSender_preimage
-		);
-	}
-	const balances_msgSender_0_prevSalt = generalise(
-		balances_msgSender_0_oldCommitment.preimage.salt
-	);
-	const balances_msgSender_1_prevSalt = generalise(
-		balances_msgSender_1_oldCommitment.preimage.salt
-	);
-	const balances_msgSender_0_prev = generalise(
-		balances_msgSender_0_oldCommitment.preimage.value
-	);
-	const balances_msgSender_1_prev = generalise(
-		balances_msgSender_1_oldCommitment.preimage.value
-	);
+    // increment would go here but has been filtered out
 
-	// Extract set membership witness:
+    // Calculate nullifier(s):
 
-	// generate witness for partitioned state
-	balances_msgSender_witness_0 = await getMembershipWitness(
-		"EscrowShield",
-		generalise(balances_msgSender_0_oldCommitment._id).integer
-	);
-	balances_msgSender_witness_1 = await getMembershipWitness(
-		"EscrowShield",
-		generalise(balances_msgSender_1_oldCommitment._id).integer
-	);
-	const balances_msgSender_0_index = generalise(
-		balances_msgSender_witness_0.index
-	);
-	const balances_msgSender_1_index = generalise(
-		balances_msgSender_witness_1.index
-	);
-	const balances_msgSender_root = generalise(balances_msgSender_witness_0.root);
-	const balances_msgSender_0_path = generalise(
-		balances_msgSender_witness_0.path
-	).all;
-	const balances_msgSender_1_path = generalise(
-		balances_msgSender_witness_1.path
-	).all;
+    let balances_msgSender_0_nullifier = poseidonHash([
+      BigInt(balances_msgSender_stateVarId),
+      BigInt(secretKey.hex(32)),
+      BigInt(balances_msgSender_0_prevSalt.hex(32)),
+    ]);
+    let balances_msgSender_1_nullifier = poseidonHash([
+      BigInt(balances_msgSender_stateVarId),
+      BigInt(secretKey.hex(32)),
+      BigInt(balances_msgSender_1_prevSalt.hex(32)),
+    ]);
+    balances_msgSender_0_nullifier = generalise(
+      balances_msgSender_0_nullifier.hex(32),
+    ); // truncate
+    balances_msgSender_1_nullifier = generalise(
+      balances_msgSender_1_nullifier.hex(32),
+    ); // truncate
+    // Non-membership witness for Nullifier
+    const balances_msgSender_0_nullifier_NonMembership_witness =
+      getnullifierMembershipWitness(balances_msgSender_0_nullifier);
+    const balances_msgSender_1_nullifier_NonMembership_witness =
+      getnullifierMembershipWitness(balances_msgSender_1_nullifier);
 
-	// non-secret line would go here but has been filtered out
+    const balances_msgSender_nullifierRoot = generalise(
+      balances_msgSender_0_nullifier_NonMembership_witness.root,
+    );
+    const balances_msgSender_0_nullifier_path = generalise(
+      balances_msgSender_0_nullifier_NonMembership_witness.path,
+    ).all;
+    const balances_msgSender_1_nullifier_path = generalise(
+      balances_msgSender_1_nullifier_NonMembership_witness.path,
+    ).all;
 
-	// increment would go here but has been filtered out
+    await temporaryUpdateNullifier(balances_msgSender_0_nullifier);
+    await temporaryUpdateNullifier(balances_msgSender_1_nullifier);
 
-	// Calculate nullifier(s):
+    // Get the new updated nullifier Paths
+    const balances_msgSender_0_updated_nullifier_NonMembership_witness =
+      getupdatedNullifierPaths(balances_msgSender_0_nullifier);
+    const balances_msgSender_1_updated_nullifier_NonMembership_witness =
+      getupdatedNullifierPaths(balances_msgSender_1_nullifier);
 
-	let balances_msgSender_0_nullifier = poseidonHash([
-		BigInt(balances_msgSender_stateVarId),
-		BigInt(secretKey.hex(32)),
-		BigInt(balances_msgSender_0_prevSalt.hex(32)),
-	]);
-	let balances_msgSender_1_nullifier = poseidonHash([
-		BigInt(balances_msgSender_stateVarId),
-		BigInt(secretKey.hex(32)),
-		BigInt(balances_msgSender_1_prevSalt.hex(32)),
-	]);
-	balances_msgSender_0_nullifier = generalise(
-		balances_msgSender_0_nullifier.hex(32)
-	); // truncate
-	balances_msgSender_1_nullifier = generalise(
-		balances_msgSender_1_nullifier.hex(32)
-	); // truncate
-	// Non-membership witness for Nullifier
-	const balances_msgSender_0_nullifier_NonMembership_witness = getnullifierMembershipWitness(
-		balances_msgSender_0_nullifier
-	);
-	const balances_msgSender_1_nullifier_NonMembership_witness = getnullifierMembershipWitness(
-		balances_msgSender_1_nullifier
-	);
+    const balances_msgSender_newNullifierRoot = generalise(
+      balances_msgSender_0_updated_nullifier_NonMembership_witness.root,
+    );
+    const balances_msgSender_0_nullifier_updatedpath = generalise(
+      balances_msgSender_0_updated_nullifier_NonMembership_witness.path,
+    ).all;
+    const balances_msgSender_1_nullifier_updatedpath = generalise(
+      balances_msgSender_1_updated_nullifier_NonMembership_witness.path,
+    ).all;
 
-	const balances_msgSender_nullifierRoot = generalise(
-		balances_msgSender_0_nullifier_NonMembership_witness.root
-	);
-	const balances_msgSender_0_nullifier_path = generalise(
-		balances_msgSender_0_nullifier_NonMembership_witness.path
-	).all;
-	const balances_msgSender_1_nullifier_path = generalise(
-		balances_msgSender_1_nullifier_NonMembership_witness.path
-	).all;
+    // Calculate commitment(s):
 
-	await temporaryUpdateNullifier(balances_msgSender_0_nullifier);
-	await temporaryUpdateNullifier(balances_msgSender_1_nullifier);
+    const balances_msgSender_2_newSalt = generalise(utils.randomHex(31));
 
-	// Get the new updated nullifier Paths
-	const balances_msgSender_0_updated_nullifier_NonMembership_witness = getupdatedNullifierPaths(
-		balances_msgSender_0_nullifier
-	);
-	const balances_msgSender_1_updated_nullifier_NonMembership_witness = getupdatedNullifierPaths(
-		balances_msgSender_1_nullifier
-	);
+    let balances_msgSender_change =
+      parseInt(balances_msgSender_0_prev.integer, 10) +
+      parseInt(balances_msgSender_1_prev.integer, 10) -
+      parseInt(balances_msgSender_newCommitmentValue.integer, 10);
 
-	const balances_msgSender_newNullifierRoot = generalise(
-		balances_msgSender_0_updated_nullifier_NonMembership_witness.root
-	);
-	const balances_msgSender_0_nullifier_updatedpath = generalise(
-		balances_msgSender_0_updated_nullifier_NonMembership_witness.path
-	).all;
-	const balances_msgSender_1_nullifier_updatedpath = generalise(
-		balances_msgSender_1_updated_nullifier_NonMembership_witness.path
-	).all;
+    balances_msgSender_change = generalise(balances_msgSender_change);
 
-	// Calculate commitment(s):
+    let balances_msgSender_2_newCommitment = poseidonHash([
+      BigInt(balances_msgSender_stateVarId),
+      BigInt(balances_msgSender_change.hex(32)),
+      BigInt(publicKey.hex(32)),
+      BigInt(balances_msgSender_2_newSalt.hex(32)),
+    ]);
 
-	const balances_msgSender_2_newSalt = generalise(utils.randomHex(31));
+    balances_msgSender_2_newCommitment = generalise(
+      balances_msgSender_2_newCommitment.hex(32),
+    ); // truncate
 
-	let balances_msgSender_change =
-		parseInt(balances_msgSender_0_prev.integer, 10) +
-		parseInt(balances_msgSender_1_prev.integer, 10) -
-		parseInt(balances_msgSender_newCommitmentValue.integer, 10);
+    // Call Zokrates to generate the proof:
 
-	balances_msgSender_change = generalise(balances_msgSender_change);
+    const allInputs = [
+      amount.integer,
+      balances_msgSender_stateVarId_key.integer,
+      secretKey.integer,
+      secretKey.integer,
+      balances_msgSender_nullifierRoot.integer,
+      balances_msgSender_newNullifierRoot.integer,
+      balances_msgSender_0_nullifier.integer,
+      balances_msgSender_0_nullifier_path.integer,
+      balances_msgSender_0_nullifier_updatedpath.integer,
+      balances_msgSender_1_nullifier.integer,
+      balances_msgSender_1_nullifier_path.integer,
+      balances_msgSender_1_nullifier_updatedpath.integer,
+      balances_msgSender_0_prev.integer,
+      balances_msgSender_0_prevSalt.integer,
+      balances_msgSender_1_prev.integer,
+      balances_msgSender_1_prevSalt.integer,
+      balances_msgSender_root.integer,
+      balances_msgSender_0_index.integer,
+      balances_msgSender_0_path.integer,
+      balances_msgSender_1_index.integer,
+      balances_msgSender_1_path.integer,
+      balances_msgSender_newOwnerPublicKey.integer,
+      balances_msgSender_2_newSalt.integer,
+      balances_msgSender_2_newCommitment.integer,
+    ].flat(Infinity);
+    const res = await generateProof('withdraw', allInputs);
+    const proof = generalise(Object.values(res.proof).flat(Infinity))
+      .map(coeff => coeff.integer)
+      .flat(Infinity);
 
-	let balances_msgSender_2_newCommitment = poseidonHash([
-		BigInt(balances_msgSender_stateVarId),
-		BigInt(balances_msgSender_change.hex(32)),
-		BigInt(publicKey.hex(32)),
-		BigInt(balances_msgSender_2_newSalt.hex(32)),
-	]);
+    // Send transaction to the blockchain:
 
-	balances_msgSender_2_newCommitment = generalise(
-		balances_msgSender_2_newCommitment.hex(32)
-	); // truncate
+    const txData = await this.instance.methods
+      .withdraw(
+        amount.integer,
+        balances_msgSender_nullifierRoot.integer,
+        balances_msgSender_newNullifierRoot.integer,
+        [
+          balances_msgSender_0_nullifier.integer,
+          balances_msgSender_1_nullifier.integer,
+        ],
+        balances_msgSender_root.integer,
+        [balances_msgSender_2_newCommitment.integer],
+        proof,
+      )
+      .encodeABI();
 
-	// Call Zokrates to generate the proof:
+    let txParams = {
+      from: config.web3.options.defaultAccount,
+      to: this.contractAddr,
+      gas: config.web3.options.defaultGas,
+      gasPrice: config.web3.options.defaultGasPrice,
+      data: txData,
+      chainId: await this.web3.eth.net.getId(),
+    };
 
-	const allInputs = [
-		amount.integer,
-		balances_msgSender_stateVarId_key.integer,
-		secretKey.integer,
-		secretKey.integer,
-		balances_msgSender_nullifierRoot.integer,
-		balances_msgSender_newNullifierRoot.integer,
-		balances_msgSender_0_nullifier.integer,
-		balances_msgSender_0_nullifier_path.integer,
-		balances_msgSender_0_nullifier_updatedpath.integer,
-		balances_msgSender_1_nullifier.integer,
-		balances_msgSender_1_nullifier_path.integer,
-		balances_msgSender_1_nullifier_updatedpath.integer,
-		balances_msgSender_0_prev.integer,
-		balances_msgSender_0_prevSalt.integer,
-		balances_msgSender_1_prev.integer,
-		balances_msgSender_1_prevSalt.integer,
-		balances_msgSender_root.integer,
-		balances_msgSender_0_index.integer,
-		balances_msgSender_0_path.integer,
-		balances_msgSender_1_index.integer,
-		balances_msgSender_1_path.integer,
-		balances_msgSender_newOwnerPublicKey.integer,
-		balances_msgSender_2_newSalt.integer,
-		balances_msgSender_2_newCommitment.integer,
-	].flat(Infinity);
-	const res = await generateProof("withdraw", allInputs);
-	const proof = generalise(Object.values(res.proof).flat(Infinity))
-		.map((coeff) => coeff.integer)
-		.flat(Infinity);
+    const key = config.web3.key;
 
-	// Send transaction to the blockchain:
+    const signed = await this.web3.eth.accounts.signTransaction(txParams, key);
+    const tx = await this.web3.eth.sendSignedTransaction(signed.rawTransaction);
 
-	const txData = await instance.methods
-		.withdraw(
-			amount.integer,
-			balances_msgSender_nullifierRoot.integer,
-			balances_msgSender_newNullifierRoot.integer,
-			[
-				balances_msgSender_0_nullifier.integer,
-				balances_msgSender_1_nullifier.integer,
-			],
-			balances_msgSender_root.integer,
-			[balances_msgSender_2_newCommitment.integer],
-			proof
-		)
-		.encodeABI();
+    let event = await this.instance.getPastEvents('NewLeaves');
+    event = event[0];
 
-	let txParams = {
-		from: config.web3.options.defaultAccount,
-		to: contractAddr,
-		gas: config.web3.options.defaultGas,
-		gasPrice: config.web3.options.defaultGasPrice,
-		data: txData,
-		chainId: await web3.eth.net.getId(),
-	};
+    if (!event) {
+      throw new Error(
+        'Tx failed - the commitment was not accepted on-chain, or the contract is not deployed.',
+      );
+    }
 
-	const key = config.web3.key;
+    let encEvent = '';
+    try {
+      encEvent = await this.instance.getPastEvents('EncryptedData');
+    } catch (err) {
+      console.log('No encrypted event');
+    }
 
-	const signed = await web3.eth.accounts.signTransaction(txParams, key);
+    // Write new commitment preimage to db:
 
-	const sendTxn = await web3.eth.sendSignedTransaction(signed.rawTransaction);
+    await markNullified(
+      generalise(balances_msgSender_0_oldCommitment._id),
+      secretKey.hex(32),
+    );
 
-	let tx = await instance.getPastEvents("NewLeaves");
+    await markNullified(
+      generalise(balances_msgSender_1_oldCommitment._id),
+      secretKey.hex(32),
+    );
 
-	tx = tx[0];
+    await storeCommitment({
+      hash: balances_msgSender_2_newCommitment,
+      name: 'balances',
+      mappingKey: balances_msgSender_stateVarId_key.integer,
+      preimage: {
+        stateVarId: generalise(balances_msgSender_stateVarId),
+        value: balances_msgSender_change,
+        salt: balances_msgSender_2_newSalt,
+        publicKey: balances_msgSender_newOwnerPublicKey,
+      },
+      secretKey:
+        balances_msgSender_newOwnerPublicKey.integer === publicKey.integer
+          ? secretKey
+          : null,
+      isNullified: false,
+    });
 
-	if (!tx) {
-		throw new Error(
-			"Tx failed - the commitment was not accepted on-chain, or the contract is not deployed."
-		);
-	}
-
-	let encEvent = "";
-
-	try {
-		encEvent = await instance.getPastEvents("EncryptedData");
-	} catch (err) {
-		console.log("No encrypted event");
-	}
-
-	// Write new commitment preimage to db:
-
-	await markNullified(
-		generalise(balances_msgSender_0_oldCommitment._id),
-		secretKey.hex(32)
-	);
-
-	await markNullified(
-		generalise(balances_msgSender_1_oldCommitment._id),
-		secretKey.hex(32)
-	);
-
-	await storeCommitment({
-		hash: balances_msgSender_2_newCommitment,
-		name: "balances",
-		mappingKey: balances_msgSender_stateVarId_key.integer,
-		preimage: {
-			stateVarId: generalise(balances_msgSender_stateVarId),
-			value: balances_msgSender_change,
-			salt: balances_msgSender_2_newSalt,
-			publicKey: balances_msgSender_newOwnerPublicKey,
-		},
-		secretKey:
-			balances_msgSender_newOwnerPublicKey.integer === publicKey.integer
-				? secretKey
-				: null,
-		isNullified: false,
-	});
-
-	return { tx, encEvent };
+    return { tx, event, encEvent };
+  }
 }

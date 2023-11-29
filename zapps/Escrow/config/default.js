@@ -1,10 +1,10 @@
 module.exports = {
   log_level: 'info',
   zokrates: {
-    url: 'http://zokrates:80',
+    url: 'http://localhost:3002',
   },
   merkleTree: {
-    url: 'http://timber:80',
+    url: 'http://localhost:3001',
   },
   // merkle-tree stuff:
   ZERO: '0',
@@ -78,7 +78,7 @@ module.exports = {
     admin: 'admin',
     adminPassword: 'admin',
   },
-  MONGO_URL: 'mongodb://admin:admin@zapp-mongo:27017',
+  MONGO_URL: 'mongodb://admin:admin@localhost:27017',
   COMMITMENTS_DB: process.env.MONGO_NAME,
   COMMITMENTS_COLLECTION: 'commitments',
   isLoggerEnabled: true,
@@ -96,12 +96,15 @@ module.exports = {
     rpcUrl: process.env.RPC_URL,
     defaultAccountMnemonic: process.env.DEFAULT_ACCOUNT_MNEMONIC,
     key: process.env.KEY,
+    adminAccount: '0x2D95B0c51e6F480882a6267F921301Dcd09FdB20',
+    adminKey:
+      '0x36527be988e7999372b4c0e4480461fbcd106f48884db51f89daedaff09fe233',
 
     options: {
       // defaultAccount: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
       defaultAccount: process.env.DEFAULT_ACCOUNT,
       defaultGas: 5221975,
-      defaultGasPrice: 20000000000,
+      defaultGasPrice: 0,
       // defaultBlock: '0', // e.g. the genesis block our blockchain
       // defaultGas: 90000000,
       // defaultGasPrice: 20000000000,

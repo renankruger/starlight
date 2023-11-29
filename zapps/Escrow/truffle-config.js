@@ -27,6 +27,9 @@ const rpcUrl = process.env.RPC_URL;
 const mnemonic = process.env.DEFAULT_ACCOUNT_MNEMONIC;
 
 module.exports = {
+  solidityLog: {
+    displayPrefix: ' :===>', // defaults to ""
+  },
   /**
    * Networks define how you connect to your ethereum client and let you set the
    * defaults web3 uses to send transactions. If you don't specify one truffle
@@ -44,8 +47,8 @@ module.exports = {
     // tab if you use this network and you must also set the `host`, `port` and `network_id`
     // options below to some value.
     //
-    development_ganache: {
-      host: 'ganache', // Localhost (default: none)
+    development: {
+      host: '127.0.0.1', // Localhost (default: none)
       port: 8545, // Standard Ethereum port (default: none)
       network_id: 1337, // Any network (default: none)
       gas: 10000000,
@@ -57,25 +60,25 @@ module.exports = {
       confirmations: 2,
       timeoutBlocks: 200,
       port: 8545,
-      skipDryRun: true
+      skipDryRun: true,
     },
     sepolia: {
       provider: () => new HDWalletProvider(mnemonic, rpcUrl),
       network_id: 11155111,
-      gas:8500000,
-      gasPrice:20000000000,
+      gas: 8500000,
+      gasPrice: 20000000000,
       confirmations: 2,
-      timeoutBlocks:200,
-      skipDryRun: true
+      timeoutBlocks: 200,
+      skipDryRun: true,
     },
     goerli: {
       provider: () => new HDWalletProvider(mnemonic, rpcUrl),
       network_id: 5,
-      gas:8500000,
-      gasPrice:20000000000,
+      gas: 8500000,
+      gasPrice: 20000000000,
       confirmations: 2,
-      timeoutBlocks:200,
-      skipDryRun: true
+      timeoutBlocks: 200,
+      skipDryRun: true,
     },
     // localhost: {
     //   host: 'localhost', // Localhost (default: none)
