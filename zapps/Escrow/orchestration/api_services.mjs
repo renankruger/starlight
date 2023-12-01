@@ -167,7 +167,12 @@ export class ServiceManager {
 
 export async function service_allCommitments(req, res, next) {
   try {
-    const commitments = await getAllCommitments();
+    const { onlyNonNullified } = req.query;
+    let getOnlyNonNullified = false;
+    if (onlyNonNullified && onlyNonNullified.toLowercase() == 'true') {
+      getOnlyNonNullified = true;
+    }
+    const commitments = await getAllCommitments(getOnlyNonNullified);
     res.send({ commitments });
   } catch (err) {
     logger.error(err);

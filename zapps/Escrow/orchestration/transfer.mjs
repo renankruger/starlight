@@ -366,19 +366,22 @@ export class TransferManager {
 
     const txData = await this.instance.methods
       .transfer(
-        balances_msgSender_nullifierRoot.integer,
-        balances_msgSender_newNullifierRoot.integer,
-        [
-          balances_msgSender_0_nullifier.integer,
-          balances_msgSender_1_nullifier.integer,
-        ],
-        balances_msgSender_root.integer,
-        [
-          balances_msgSender_2_newCommitment.integer,
-          balances_recipient_newCommitment.integer,
-        ],
-        [balances_recipient_cipherText],
-        [balances_recipient_encKey],
+        {
+          nullifierRoot: balances_msgSender_nullifierRoot.integer,
+          latestNullifierRoot: balances_msgSender_newNullifierRoot.integer,
+          newNullifiers: [
+            balances_msgSender_0_nullifier.integer,
+            balances_msgSender_1_nullifier.integer,
+          ],
+          commitmentRoot: balances_msgSender_root.integer,
+          newCommitments: [
+            balances_msgSender_2_newCommitment.integer,
+            balances_recipient_newCommitment.integer,
+          ],
+          cipherText: [balances_recipient_cipherText],
+          encKeys: [balances_recipient_encKey],
+          customInputs: [],
+        },
         proof,
       )
       .encodeABI();
@@ -396,15 +399,13 @@ export class TransferManager {
 
     const signed = await this.web3.eth.accounts.signTransaction(txParams, key);
 
-    const sendTxn = await this.web3.eth.sendSignedTransaction(
-      signed.rawTransaction,
-    );
+    const tx = await this.web3.eth.sendSignedTransaction(signed.rawTransaction);
 
-    let tx = await this.instance.getPastEvents('NewLeaves');
+    let event = await this.instance.getPastEvents('NewLeaves');
 
-    tx = tx[0];
+    event = event[0];
 
-    if (!tx) {
+    if (!event) {
       throw new Error(
         'Tx failed - the commitment was not accepted on-chain, or the contract is not deployed.',
       );
@@ -464,6 +465,6 @@ export class TransferManager {
       isNullified: false,
     });
 
-    return { tx, encEvent };
+    return { tx, event, encEvent };
   }
 }
