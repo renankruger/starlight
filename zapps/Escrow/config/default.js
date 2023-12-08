@@ -4,7 +4,7 @@ module.exports = {
     url: 'http://localhost:3002',
   },
   merkleTree: {
-    url: 'http://localhost:3001',
+    url: process.env.TIMBER_URL || 'http://localhost:3001',
   },
   // merkle-tree stuff:
   ZERO: '0',
@@ -78,7 +78,7 @@ module.exports = {
     admin: 'admin',
     adminPassword: 'admin',
   },
-  MONGO_URL: 'mongodb://admin:admin@localhost:27017',
+  MONGO_URL: process.env.MONGO_URL || 'mongodb://admin:admin@localhost:27017',
   COMMITMENTS_DB: process.env.MONGO_NAME,
   COMMITMENTS_COLLECTION: 'commitments',
   isLoggerEnabled: true,

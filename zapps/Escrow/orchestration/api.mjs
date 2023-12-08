@@ -2,6 +2,7 @@ import express from 'express';
 import { ServiceManager } from './api_services.mjs';
 import { Router } from './api_routes.mjs'; // import the routes
 import Web3 from './common/web3.mjs';
+import { EncryptedDataEventListener } from './ecrypted-data-listener.mjs';
 
 function gracefulshutdown() {
   console.log('Shutting down');
@@ -19,7 +20,10 @@ app.use(express.json());
 
 const web3 = Web3.connection();
 const serviceMgr = new ServiceManager(web3);
-serviceMgr.init().then(() => {
+serviceMgr.init().then(async () => {
+  const eventListener = new EncryptedDataEventListener(web3);
+  await eventListener.start();
+
   const router = new Router(serviceMgr);
   const r = router.addRoutes();
   app.use('/', r);
