@@ -1,4 +1,13 @@
-import { getContractInstance, getContractAddress } from './common/contract.mjs';
+import { join } from 'path';
+import fs from 'fs';
+import utils from 'zkp-utils';
+import config from 'config';
+import { generalise } from 'general-number';
+import { getContractInstance } from './common/contract.mjs';
+import { storeCommitment } from './common/commitment-storage.mjs';
+import { decrypt, poseidonHash } from './common/number-theory.mjs';
+
+const __dirname = new URL('.', import.meta.url).pathname;
 
 export class EncryptedDataEventListener {
   constructor(web3) {
@@ -7,6 +16,21 @@ export class EncryptedDataEventListener {
 
   async init() {
     this.instance = await getContractInstance('EscrowShield');
+    const { secretKey, publicKey } = JSON.parse(
+      fs.readFileSync(join(__dirname, './common/db/key.json')),
+    );
+    this.secretKey = generalise(secretKey);
+    this.publicKey = generalise(publicKey);
+
+    let stateVarId = 6;
+    this.ethAddress = generalise(config.web3.options.defaultAccount);
+    stateVarId = generalise(
+      utils.mimcHash(
+        [generalise(stateVarId).bigInt, this.ethAddress.bigInt],
+        'ALT_BN_254',
+      ),
+    );
+    this.ethAddressHash = stateVarId;
   }
 
   async start() {
@@ -26,44 +50,52 @@ export class EncryptedDataEventListener {
       topics: [eventJsonInterface.signature],
     });
 
-    /* eventData example
-      {
-        returnValues: {
-            myIndexedParam: 20,
-            myOtherIndexedParam: '0x123456789...',
-            myNonIndexParam: 'My String'
-        },
-        raw: {
-            data: '0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385',
-            topics: ['0xfd43ade1c09fade1c0d57a7af66ab4ead7c2c2eb7b11a91ffdd57a7af66ab4ead7', '0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385']
-        },
-        event: 'MyEvent',
-        signature: '0xfd43ade1c09fade1c0d57a7af66ab4ead7c2c2eb7b11a91ffdd57a7af66ab4ead7',
-        logIndex: 0,
-        transactionIndex: 0,
-        transactionHash: '0x7f9fade1c0d57a7af66ab4ead79fade1c0d57a7af66ab4ead7c2c2eb7b11a91385',
-        blockHash: '0xfd43ade1c09fade1c0d57a7af66ab4ead7c2c2eb7b11a91ffdd57a7af66ab4ead7',
-        blockNumber: 1234,
-        address: '0xde0B295669a9FD93d5F28D9Ec85E40f4cb697BAe'
-      }
-    */
+    const self = this;
     eventSubscription
       .on('connected', function (subscriptionId) {
         console.log(`New subscription: ${subscriptionId}`);
       })
-      .on('data', eventData => {
+      .on('data', async eventData => {
         console.log(`New ${eventName} event detected`);
         console.log(`Event Data: ${JSON.stringify(eventData, null, 2)}`);
 
-        const eventObject = {
-          eventData,
-          eventJsonInterface,
-        };
+        const cipherText = eventData.returnValues.cipherText;
+        const ephPublicKey = eventData.returnValues.ephPublicKey;
+        const decrypted = decrypt(
+          cipherText,
+          self.secretKey.integer,
+          ephPublicKey,
+        );
 
-        // let's add the eventObject to the list of events:
-        // events = addNewEvent(eventObject, events);
+        const ownerPublicKey = generalise(decrypted[0]);
+        if (ownerPublicKey.integer === self.ethAddressHash.integer) {
+          console.log(
+            'The event is for a state owned by us, adding a commitment based on the decrypted value and salt',
+          );
+          const value = generalise(decrypted[1]);
+          const salt = generalise(decrypted[2]);
 
-        // responder(eventObject, responseFunction, responseFunctionArgs);
+          let balances_msgSender_newCommitment = poseidonHash([
+            BigInt(self.ethAddressHash.hex(32)),
+            BigInt(value.hex(32)),
+            BigInt(ownerPublicKey.hex(32)),
+            BigInt(salt.hex(32)),
+          ]);
+
+          await storeCommitment({
+            hash: balances_msgSender_newCommitment,
+            name: 'balances',
+            mappingKey: self.ethAddress.integer,
+            preimage: {
+              stateVarId: self.ethAddressHash,
+              value,
+              salt,
+              publicKey: self.publicKey,
+            },
+            secretKey: self.secretKey,
+            isNullified: false,
+          });
+        }
       });
   }
 }
