@@ -209,41 +209,7 @@ export class WithdrawManager {
     balances_msgSender_1_nullifier = generalise(
       balances_msgSender_1_nullifier.hex(32),
     ); // truncate
-    // Non-membership witness for Nullifier
-    const balances_msgSender_0_nullifier_NonMembership_witness =
-      getnullifierMembershipWitness(balances_msgSender_0_nullifier);
-    const balances_msgSender_1_nullifier_NonMembership_witness =
-      getnullifierMembershipWitness(balances_msgSender_1_nullifier);
-
-    const balances_msgSender_nullifierRoot = generalise(
-      balances_msgSender_0_nullifier_NonMembership_witness.root,
-    );
-    const balances_msgSender_0_nullifier_path = generalise(
-      balances_msgSender_0_nullifier_NonMembership_witness.path,
-    ).all;
-    const balances_msgSender_1_nullifier_path = generalise(
-      balances_msgSender_1_nullifier_NonMembership_witness.path,
-    ).all;
-
-    await temporaryUpdateNullifier(balances_msgSender_0_nullifier);
-    await temporaryUpdateNullifier(balances_msgSender_1_nullifier);
-
-    // Get the new updated nullifier Paths
-    const balances_msgSender_0_updated_nullifier_NonMembership_witness =
-      getupdatedNullifierPaths(balances_msgSender_0_nullifier);
-    const balances_msgSender_1_updated_nullifier_NonMembership_witness =
-      getupdatedNullifierPaths(balances_msgSender_1_nullifier);
-
-    const balances_msgSender_newNullifierRoot = generalise(
-      balances_msgSender_0_updated_nullifier_NonMembership_witness.root,
-    );
-    const balances_msgSender_0_nullifier_updatedpath = generalise(
-      balances_msgSender_0_updated_nullifier_NonMembership_witness.path,
-    ).all;
-    const balances_msgSender_1_nullifier_updatedpath = generalise(
-      balances_msgSender_1_updated_nullifier_NonMembership_witness.path,
-    ).all;
-
+    
     // Calculate commitment(s):
 
     const balances_msgSender_2_newSalt = generalise(utils.randomHex(31));
@@ -273,14 +239,8 @@ export class WithdrawManager {
       balances_msgSender_stateVarId_key.integer,
       secretKey.integer,
       secretKey.integer,
-      balances_msgSender_nullifierRoot.integer,
-      balances_msgSender_newNullifierRoot.integer,
       balances_msgSender_0_nullifier.integer,
-      balances_msgSender_0_nullifier_path.integer,
-      balances_msgSender_0_nullifier_updatedpath.integer,
       balances_msgSender_1_nullifier.integer,
-      balances_msgSender_1_nullifier_path.integer,
-      balances_msgSender_1_nullifier_updatedpath.integer,
       balances_msgSender_0_prev.integer,
       balances_msgSender_0_prevSalt.integer,
       balances_msgSender_1_prev.integer,
@@ -304,8 +264,6 @@ export class WithdrawManager {
     const txData = await this.instance.methods
       .withdraw(
         amount.integer,
-        balances_msgSender_nullifierRoot.integer,
-        balances_msgSender_newNullifierRoot.integer,
         [
           balances_msgSender_0_nullifier.integer,
           balances_msgSender_1_nullifier.integer,
