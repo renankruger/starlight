@@ -21,7 +21,7 @@ contract EscrowShield is MerkleTree {
 
     event EncryptedData(uint256[] cipherText, uint256[2] ephPublicKey);
 
-    uint256 public newNullifierRoot;
+    mapping(uint256 => uint256) public nullifiers;
 
     mapping(uint256 => uint256) public commitmentRoots;
 
@@ -30,8 +30,6 @@ contract EscrowShield is MerkleTree {
     mapping(address => uint256) public zkpPublicKeys;
 
     struct Inputs {
-        uint nullifierRoot;
-        uint latestNullifierRoot;
         uint[] newNullifiers;
         uint commitmentRoot;
         uint[] newCommitments;
@@ -56,6 +54,12 @@ contract EscrowShield is MerkleTree {
 
         uint[] memory newCommitments = _inputs.newCommitments;
 
+        for (uint i; i < newNullifiers.length; i++) {
+      			uint n = newNullifiers[i];
+      			require(nullifiers[n] == 0, "Nullifier already exists");
+      			nullifiers[n] = n;
+      		}
+
         require(
             commitmentRoots[_inputs.commitmentRoot] == _inputs.commitmentRoot,
             'Input commitmentRoot does not exist.'
@@ -72,7 +76,7 @@ contract EscrowShield is MerkleTree {
         uint256[] memory inputs = new uint256[](
             customInputs.length +
                 newNullifiers.length +
-                (newNullifiers.length > 0 ? 3 : 0) +
+                (newNullifiers.length > 0 ? 1 : 0) +
                 newCommitments.length +
                 encInputsLen
         );
@@ -88,13 +92,6 @@ contract EscrowShield is MerkleTree {
 
         if (functionId == uint(FunctionNames.transfer)) {
             uint k = 0;
-
-            require(
-                newNullifierRoot == _inputs.nullifierRoot,
-                'Input NullifierRoot does not exist.'
-            );
-            inputs[k++] = _inputs.nullifierRoot;
-            inputs[k++] = _inputs.latestNullifierRoot;
             inputs[k++] = newNullifiers[0];
             inputs[k++] = newNullifiers[1];
             inputs[k++] = _inputs.commitmentRoot;
@@ -111,13 +108,7 @@ contract EscrowShield is MerkleTree {
         if (functionId == uint(FunctionNames.withdraw)) {
             uint k = 0;
 
-            require(
-                newNullifierRoot == _inputs.nullifierRoot,
-                'Input NullifierRoot does not exist.'
-            );
             inputs[k++] = customInputs[0];
-            inputs[k++] = _inputs.nullifierRoot;
-            inputs[k++] = _inputs.latestNullifierRoot;
             inputs[k++] = newNullifiers[0];
             inputs[k++] = newNullifiers[1];
             inputs[k++] = _inputs.commitmentRoot;
@@ -127,15 +118,8 @@ contract EscrowShield is MerkleTree {
         console.log('verify - 6');
 
         if (functionId == uint(FunctionNames.joinCommitments)) {
-            require(
-                newNullifierRoot == _inputs.nullifierRoot,
-                'Input NullifierRoot does not exist.'
-            );
 
             uint k = 0;
-
-            inputs[k++] = _inputs.nullifierRoot;
-            inputs[k++] = _inputs.latestNullifierRoot;
             inputs[k++] = newNullifiers[0];
             inputs[k++] = newNullifiers[1];
             inputs[k++] = _inputs.commitmentRoot;
@@ -156,15 +140,9 @@ contract EscrowShield is MerkleTree {
         } else {
             console.log('no new commitments to add');
         }
-
-        if (newNullifiers.length > 0) {
-            newNullifierRoot = _inputs.latestNullifierRoot;
-        }
     }
 
     function joinCommitments(
-        uint256 nullifierRoot,
-        uint256 latestNullifierRoot,
         uint256[] calldata newNullifiers,
         uint256 commitmentRoot,
         uint256[] calldata newCommitments,
@@ -174,10 +152,6 @@ contract EscrowShield is MerkleTree {
 
         inputs.customInputs = new uint[](1);
         inputs.customInputs[0] = 1;
-
-        inputs.nullifierRoot = nullifierRoot;
-
-        inputs.latestNullifierRoot = latestNullifierRoot;
 
         inputs.newNullifiers = newNullifiers;
 
@@ -200,7 +174,6 @@ contract EscrowShield is MerkleTree {
             vks[i] = vk[i];
         }
         erc20 = IERC20(_erc20);
-        newNullifierRoot = Initial_NullifierRoot;
     }
 
     function deposit(
@@ -224,9 +197,8 @@ contract EscrowShield is MerkleTree {
 
         inputs.newCommitments = newCommitments;
 
-        bytes4 sig = bytes4(keccak256('deposit(uint256,uint256[],uint256[])'));
         console.log('Calling verify');
-        if (sig == msg.sig) verify(proof, uint(FunctionNames.deposit), inputs);
+        verify(proof, uint(FunctionNames.deposit), inputs);
     }
 
     function transfer(Inputs calldata inputs, uint256[] calldata proof) public {
@@ -243,8 +215,6 @@ contract EscrowShield is MerkleTree {
 
     function withdraw(
         uint256 amount,
-        uint256 nullifierRoot,
-        uint256 latestNullifierRoot,
         uint256[] calldata newNullifiers,
         uint256 commitmentRoot,
         uint256[] calldata newCommitments,
@@ -259,21 +229,12 @@ contract EscrowShield is MerkleTree {
         inputs.customInputs[0] = amount;
         inputs.customInputs[1] = 1;
 
-        inputs.nullifierRoot = nullifierRoot;
-
-        inputs.latestNullifierRoot = latestNullifierRoot;
-
         inputs.newNullifiers = newNullifiers;
 
         inputs.commitmentRoot = commitmentRoot;
 
         inputs.newCommitments = newCommitments;
 
-        bytes4 sig = bytes4(
-            keccak256(
-                'withdraw(uint256,uint256,uint256,uint256[],uint256,uint256[],uint256[])'
-            )
-        );
-        if (sig == msg.sig) verify(proof, uint(FunctionNames.withdraw), inputs);
+        verify(proof, uint(FunctionNames.withdraw), inputs);
     }
 }

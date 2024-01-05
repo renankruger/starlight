@@ -34,21 +34,21 @@ export const writeFile = (filePath, data) => {
 export const writeVK = async functionName => {
   if (!functionName) {
     functionNames.forEach(name => {
-      const sourcePath = join(__dirname, `../../output/${name}/${name}_vk.key`); // won't change
-      const destinationPath = join(__dirname, `./db/${name}_vk.key`); // TODO - change to output of compiler
-      if (!fs.existsSync(join(__dirname, `db/`)))
-        fs.mkdirSync(join(__dirname, `db/`), { recursive: true });
+      const sourcePath = join(__dirname, `output/${name}/${name}_vk.key`); // won't change
+      const destinationPath = join(__dirname, `orchestration/common/db/${name}_vk.key`); // TODO - change to output of compiler
+      if (!fs.existsSync(join(__dirname, `orchestration/common/db/`)))
+        fs.mkdirSync(join(__dirname, `orchestration/common/db/`), { recursive: true });
       const vk = JSON.parse(readFile(sourcePath));
       writeFile(destinationPath, vk);
     });
   } else {
     const sourcePath = join(
       __dirname,
-      `../../output/${functionName}/${functionName}_vk.key`,
+      `output/${functionName}/${functionName}_vk.key`,
     ); // won't change
-    const destinationPath = join(__dirname, `./db/${functionName}_vk.key`); // TODO - change to output of compiler
-    if (!fs.existsSync(join(__dirname, `db/`)))
-      fs.mkdirSync(join(__dirname, `db/`), { recursive: true });
+    const destinationPath = join(__dirname, `orchestration/common/db/${functionName}_vk.key`); // TODO - change to output of compiler
+    if (!fs.existsSync(join(__dirname, `orchestration/common/db/`)))
+      fs.mkdirSync(join(__dirname, `orchestration/common/db/`), { recursive: true });
     const vk = JSON.parse(readFile(sourcePath));
     writeFile(destinationPath, vk);
   }
