@@ -44,7 +44,7 @@ export const writeVK = async functionName => {
   } else {
     const sourcePath = join(
       __dirname,
-      `output/${name}/${name}_vk.key`,
+      `output/${functionName}/${functionName}_vk.key`,
     ); // won't change
     const destinationPath = join(__dirname, `orchestration/common/db/${functionName}_vk.key`); // TODO - change to output of compiler
     if (!fs.existsSync(join(__dirname, `orchestration/common/db/`)))
