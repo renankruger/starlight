@@ -20,74 +20,31 @@ const web3 = Web3.connection();
 const { generalise } = GN;
 const keyDb = './db/key.json';
 
-export const contractPath = contractName => {
-  return join(__dirname, `../../build/contracts/${contractName}.json`);
-};
-
 const { options } = config.web3;
 
-export async function getContractInterface(contractName) {
-  const path = contractPath(contractName);
-  const contractInterface = JSON.parse(fs.readFileSync(path, 'utf8'));
-  // logger.debug('\ncontractInterface:', contractInterface);
-  return contractInterface;
-}
-
 export async function getContractAddress(contractName) {
-  let deployedAddress;
-  let errorCount = 0;
-
-  if (!deployedAddress) {
-    while (errorCount < 25) {
-      try {
-        const contractInterface = await getContractInterface(contractName);
-        const networkId = await web3.eth.net.getId();
-        logger.silly('networkId:', networkId);
-
-        if (
-          contractInterface &&
-          contractInterface.networks &&
-          contractInterface.networks[networkId]
-        ) {
-          deployedAddress = contractInterface.networks[networkId].address;
-        }
-        if (deployedAddress === undefined)
-          throw new Error('Shield address was undefined');
-        if (deployedAddress) break;
-      } catch (err) {
-        errorCount++;
-        logger.warn(
-          'Unable to get a contract address - will try again in 5 seconds',
-        );
-        await new Promise(resolve => setTimeout(() => resolve(), 5000));
-      }
-    }
+  const contract = config.contracts[contractName];
+  if (!contract) {
+    throw new Error(`Contract ${contractName} not found in config`);
   }
-
-  logger.silly('deployed address:', deployedAddress);
-  return deployedAddress;
+  return contract.address;
 }
 
-// returns a web3 contract instance
 export async function getContractInstance(contractName, deployedAddress) {
-  const contractInterface = await getContractInterface(contractName);
+  const contract = config.contracts[contractName];
+  if (!contract) {
+    throw new Error(`Contract ${contractName} not found in config`);
+  }
+  const abi = contract.abi;
   if (!deployedAddress) {
     // eslint-disable-next-line no-param-reassign
     deployedAddress = await getContractAddress(contractName);
   }
 
-  const contractInstance = deployedAddress
-    ? new web3.eth.Contract(contractInterface.abi, deployedAddress, options)
-    : new web3.eth.Contract(contractInterface.abi, null, options);
-  // logger.silly('\ncontractInstance:', contractInstance);
+  const contractInstance = new web3.eth.Contract(abi, deployedAddress, options);
   logger.info(`${contractName} Address: ${deployedAddress}`);
 
   return contractInstance;
-}
-
-export async function getContractBytecode(contractName) {
-  const contractInterface = await getContractInterface(contractName);
-  return contractInterface.evm.bytecode.object;
 }
 
 export async function deploy(
@@ -166,4 +123,20 @@ export async function registerKey(
   fs.writeFileSync(join(__dirname, keyDb), JSON.stringify(keyJson, null, 4));
 
   return publicKey;
+}
+
+const contractPath = contractName => {
+  return join(__dirname, `../../build/contracts/${contractName}.json`);
+};
+
+async function getContractInterface(contractName) {
+  const path = contractPath(contractName);
+  const contractInterface = JSON.parse(fs.readFileSync(path, 'utf8'));
+  // logger.debug('\ncontractInterface:', contractInterface);
+  return contractInterface;
+}
+
+async function getContractBytecode(contractName) {
+  const contractInterface = await getContractInterface(contractName);
+  return contractInterface.evm.bytecode.object;
 }
