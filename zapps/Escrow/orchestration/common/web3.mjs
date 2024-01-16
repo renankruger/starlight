@@ -17,7 +17,7 @@ export default {
 
 		logger.http("Blockchain Connecting ...");
 		const provider = new Web3.providers.WebsocketProvider(
-			config.web3.url,
+			config.web3.rpcUrl,
 			null,
 			config.web3.options
 		);

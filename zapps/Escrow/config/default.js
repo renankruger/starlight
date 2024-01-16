@@ -1,19 +1,11 @@
 module.exports = {
   log_level: 'info',
   zokrates: {
-    url: 'http://localhost:3002',
+    url: process.env.ZOKRATES_URL || 'http://localhost:3002',
   },
   merkleTree: {
     url: process.env.TIMBER_URL || 'http://localhost:3001',
   },
-  // merkle-tree stuff:
-  ZERO: '0',
-  HASH_TYPE: 'mimc',
-  CURVE: 'ALT_BN_254',
-  LEAF_HASHLENGTH: 32, // expected length of leaves' values in bytes
-  NODE_HASHLENGTH: 32, // expected length of nodes' values up the merkle tree, in bytes
-  POLLING_FREQUENCY: 6000, // milliseconds
-  FILTER_GENESIS_BLOCK_NUMBER: 0, // blockNumber
 
   BN128_GROUP_ORDER: BigInt(
     '21888242871839275222246405745257275088548364400416034343698204186575808495617',
@@ -46,72 +38,34 @@ module.exports = {
     MONTB: BigInt(1),
   },
 
-  tolerances: {
-    LAG_BEHIND_CURRENT_BLOCK: 5, // add warnings for use of tree data which lags further behind the current block (e.g. due to anonymity concerns)
-  },
-  BULK_WRITE_BUFFER_SIZE: 1000, // number of documents to add to a buffer before bulk-writing them to the db
-  contractOrigin: process.env.CONTRACT_LOCATION,
-  // contracts to filter:
   contracts: {
-    // contract name:
     EscrowShield: {
-      treeHeight: 32,
-      events: {
-        // filter for the following event names:
-        NewLeaf: {
-          // filter for these event parameters:
-          parameters: ['leafIndex', 'leafValue'],
-        },
-        NewLeaves: {
-          // filter for these event parameters:
-          parameters: ['minLeafIndex', 'leafValues'],
-        },
-      },
+      address: process.env.ESCROW_SHIELD_ADDRESS,
+      abi: require('../build/contracts/EscrowShield.json').abi,
     },
-  },
-  // mongodb:
-  // TODO: The latest Timber image has been edited... not sure how to create a 'user' for Timber anymore...
-  mongo: {
-    host: 'timber-mongo',
-    port: '27017',
-    databaseName: 'merkle_tree',
-    admin: 'admin',
-    adminPassword: 'admin',
+    ERC20: {
+      address: process.env.ERC20_ADDRESS,
+      abi: require('../build/contracts/ERC20.json').abi,
+    },
   },
   MONGO_URL: process.env.MONGO_URL || 'mongodb://admin:admin@localhost:27017',
   COMMITMENTS_DB: process.env.MONGO_NAME,
   COMMITMENTS_COLLECTION: 'commitments',
-  isLoggerEnabled: true,
   // web3:
-  deployer: {
-    host: process.env.BLOCKCHAIN_HOST,
-    port: process.env.BLOCKCHAIN_PORT,
-  },
   // web3:
   web3: {
-    host: process.env.BLOCKCHAIN_HOST,
-    port: process.env.BLOCKCHAIN_PORT,
-    // url: `${process.env.BLOCKCHAIN_HOST}:${process.env.BLOCKCHAIN_PORT}`,
-    url: process.env.RPC_URL,
     rpcUrl: process.env.RPC_URL,
-    defaultAccountMnemonic: process.env.DEFAULT_ACCOUNT_MNEMONIC,
     key: process.env.KEY,
-    adminAccount: '0x2D95B0c51e6F480882a6267F921301Dcd09FdB20',
+    adminAccount:
+      process.env.ADMIN_ACCOUNT || '0x2D95B0c51e6F480882a6267F921301Dcd09FdB20',
     adminKey:
+      process.env.ADMIN_KEY ||
       '0x36527be988e7999372b4c0e4480461fbcd106f48884db51f89daedaff09fe233',
 
     options: {
-      // defaultAccount: '0x90F8bf6A479f320ead074411a4B0e7944Ea8c9C1',
       defaultAccount: process.env.DEFAULT_ACCOUNT,
       defaultGas: 5221975,
       defaultGasPrice: 0,
-      // defaultBlock: '0', // e.g. the genesis block our blockchain
-      // defaultGas: 90000000,
-      // defaultGasPrice: 20000000000,
-      // transactionBlockTimeout: 50,
-      // transactionConfirmationBlocks: 15,
-      // transactionPollingTimeout: 480,
-      // transactionSigner: new CustomTransactionSigner()
     },
   },
 };
