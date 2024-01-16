@@ -1,0 +1,183 @@
+{
+  "info": {
+    "_postman_id": "40d94a4e-7d21-44cf-b225-9451e1720958",
+    "name": "starlight (receiver)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "21115553"
+  },
+  "item": [
+    {
+      "name": "get all commitments - receiver",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let jsonData = JSON.parse(responseBody);",
+              "let balance = 0;",
+              "for (let c of jsonData.commitments) {",
+              "    if (c.preimage.stateVarId == '0x094b0fa5277418317f9b3d8b8ee0372e264444b88b6b85c6b6a79d97f96daa6a' && !c.isNullified) {",
+              "        balance += Number(c.preimage.value);",
+              "    }",
+              "}",
+              "",
+              "console.log('Current balance: ', balance);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host_receiver}}/getAllCommitments",
+          "host": ["{{host_receiver}}"],
+          "path": ["getAllCommitments"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "mint",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"amount\": 100\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host_receiver}}/mint",
+          "host": ["{{host_receiver}}"],
+          "path": ["mint"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "balanceOf",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host_receiver}}/balanceOf?account={{account_receiver}}",
+          "host": ["{{host_receiver}}"],
+          "path": ["balanceOf"],
+          "query": [
+            {
+              "key": "account",
+              "value": "{{account_receiver}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "approve",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"spender\": \"{{EscrowShield}}\",\n    \"amount\": 100\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host_receiver}}/approve",
+          "host": ["{{host_receiver}}"],
+          "path": ["approve"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "deposit",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"amount\": 12\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host_receiver}}/deposit",
+          "host": ["{{host_receiver}}"],
+          "path": ["deposit"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "transfer",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"recipient\": \"{{account_sender}}\",\n    \"amount\": 5\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host_receiver}}/transfer",
+          "host": ["{{host_receiver}}"],
+          "path": ["transfer"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "withdraw",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"amount\": 5\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host_receiver}}/withdraw",
+          "host": ["{{host_receiver}}"],
+          "path": ["withdraw"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
