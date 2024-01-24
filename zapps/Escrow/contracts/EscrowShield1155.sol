@@ -4,7 +4,7 @@ pragma solidity ^0.8.0;
 
 import './verify/IVerifier.sol';
 import './merkle-tree/MerkleTree.sol';
-import './IERC20.sol';
+import './IERC1155.sol';
 import 'truffle/console.sol';
 
 contract EscrowShield is MerkleTree {
@@ -28,6 +28,8 @@ contract EscrowShield is MerkleTree {
     mapping(bytes32 => address) lockedProofs;
 
     uint256 public latestRoot;
+
+    uint256 public assetID;
 
     mapping(address => uint256) public zkpPublicKeys;
 
@@ -61,10 +63,10 @@ contract EscrowShield is MerkleTree {
         uint[] memory newCommitments = _inputs.newCommitments;
 
         for (uint i; i < newNullifiers.length; i++) {
-      			uint n = newNullifiers[i];
-      			require(nullifiers[n] == 0, "Nullifier already exists");
-      			nullifiers[n] = n;
-      		}
+            uint n = newNullifiers[i];
+            require(nullifiers[n] == 0, 'Nullifier already exists');
+            nullifiers[n] = n;
+        }
 
         require(
             commitmentRoots[_inputs.commitmentRoot] == _inputs.commitmentRoot,
@@ -124,7 +126,6 @@ contract EscrowShield is MerkleTree {
         console.log('verify - 6');
 
         if (functionId == uint(FunctionNames.joinCommitments)) {
-
             uint k = 0;
             inputs[k++] = newNullifiers[0];
             inputs[k++] = newNullifiers[1];
@@ -168,18 +169,20 @@ contract EscrowShield is MerkleTree {
         verify(proof, uint(FunctionNames.joinCommitments), inputs);
     }
 
-    IERC20 public erc20;
+    IERC1155 public erc1155;
 
     constructor(
-        address _erc20,
+        address _erc1155,
         address verifierAddress,
-        uint256[][] memory vk
+        uint256[][] memory vk,
+        uint256 _assetID
     ) {
         verifier = IVerifier(verifierAddress);
         for (uint i = 0; i < vk.length; i++) {
             vks[i] = vk[i];
         }
-        erc20 = IERC20(_erc20);
+        erc1155 = IERC1155(_erc1155);
+        assetID = _assetID;
     }
 
     function deposit(
@@ -192,7 +195,13 @@ contract EscrowShield is MerkleTree {
             msg.sender,
             amount
         );
-        bool hasBalance = erc20.transferFrom(msg.sender, address(this), amount);
+        bool hasBalance = erc1155.safeTransferFrom(
+            msg.sender,
+            address(this),
+            assetID,
+            amount,
+            'deposit to Starlight'
+        );
         require(hasBalance == true);
 
         Inputs memory inputs;
@@ -210,8 +219,8 @@ contract EscrowShield is MerkleTree {
     function transfer(Inputs calldata inputs, uint256[] calldata proof) public {
         console.log('Calling verify');
         bytes32 proofHash = keccak256(abi.encodePacked(proof));
-        if (lockedProofs[proofHash] != address(0)){
-            require(lockedProofs[proofHash]==msg.sender, "Proof is locked");
+        if (lockedProofs[proofHash] != address(0)) {
+            require(lockedProofs[proofHash] == msg.sender, 'Proof is locked');
         }
         verify(proof, uint(FunctionNames.transfer), inputs);
 
@@ -230,8 +239,13 @@ contract EscrowShield is MerkleTree {
         uint256[] calldata newCommitments,
         uint256[] calldata proof
     ) public {
-        bool success = erc20.transfer(msg.sender, amount);
-        require(success, 'ERC20 transfer failed');
+        erc1155.safeTransferFrom(
+            address(this),
+            msg.sender,
+            assetID,
+            amount,
+            'withdraw from Starlight'
+        );
 
         Inputs memory inputs;
 
