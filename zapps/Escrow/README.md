@@ -20,6 +20,12 @@ A starlight instance is made up of a number of microservices:
 This runtime hosts the API to interact with the various smart contracts (ERC20
 and EscrowShield). It also manages the signing keys for submitting transactions.
 
+The zkSNARK trusted setup was performed with the output proving keys and
+verification keys commited in the `proving-files` folder. For production
+purposes, to the extent that you feel comfortable building applications for
+PoC/Pilot purposes with this framework, you would want to perform your own
+trusted setup ceremony.
+
 ```console
 $ cd zapps/Escrow
 $ docker build -t starlight-mongo -f Dockerfile.mongo .
@@ -39,6 +45,7 @@ following repository and checkout the `config` branch:
 ```console
 $ git clone https://github.com/kaleido-io/timber.git
 $ git checkout config
+$ cd merkle-tree
 $ docker build -t timber .
 ```
 
@@ -230,8 +237,8 @@ Summary
   `starlight` project has been checked out in the folder `/tmp`.
 
 ```console
-$ docker run -v /tmp/sender/output:/app/output -v /tmp/starlight/zapps/Escrow/circuits:/app/circuits -v /tmp/starlight/zapps/Escrow/orchestration/common/write-vk.mjs:/app/write-vk.mjs -v /tmp/starlight/zapps/Escrow/orchestration/common/db:/app/orchestration/common/db --name zokrates-sender --network starlight -d ghcr.io/eyblockchain/zokrates-worker-starlight:v0.2
-$ docker run -v /tmp/receiver/output:/app/output -v /tmp/starlight/zapps/Escrow/circuits:/app/circuits -v /tmp/starlight/zapps/Escrow/orchestration/common/write-vk.mjs:/app/write-vk.mjs -v /tmp/starlight/zapps/Escrow/orchestration/common/db:/app/orchestration/common/db --name zokrates-receiver --network starlight -d ghcr.io/eyblockchain/zokrates-worker-starlight:v0.2
+$ docker run -v /tmp/starlight/zapps/Escrow/proving-files:/app/output -v /tmp/starlight/zapps/Escrow/circuits:/app/circuits -v /tmp/starlight/zapps/Escrow/orchestration/common/write-vk.mjs:/app/write-vk.mjs -v /tmp/starlight/zapps/Escrow/orchestration/common/db:/app/orchestration/common/db --name zokrates-sender --network starlight -d ghcr.io/eyblockchain/zokrates-worker-starlight:v0.2
+$ docker run -v /tmp/starlight/zapps/Escrow/proving-files:/app/output -v /tmp/starlight/zapps/Escrow/circuits:/app/circuits -v /tmp/starlight/zapps/Escrow/orchestration/common/write-vk.mjs:/app/write-vk.mjs -v /tmp/starlight/zapps/Escrow/orchestration/common/db:/app/orchestration/common/db --name zokrates-receiver --network starlight -d ghcr.io/eyblockchain/zokrates-worker-starlight:v0.2
 ```
 
 - Start the mongo db servers: Each instance will have 2 mongo servers, one used
@@ -252,8 +259,8 @@ $ docker run -e MONGO_INITDB_ROOT_USERNAME=admin -e MONGO_INITDB_ROOT_PASSWORD=a
   to get the ABI for the various contract calls.
 
 ```console
-$ docker run -e RPC_URL=ws://ganache:8545 -e DB_URL=mongodb://timber-mongo-sender:27017 -e HASH_TYPE=mimc -e UNIQUE_LEAVES=true -v /tmp/starlight/zapps/Escrow/build/contracts:/app/build/contracts --network starlight --name timber-sender -d timber
-$ docker run -e RPC_URL=ws://ganache:8545 -e DB_URL=mongodb://timber-mongo-receiver:27017 -e HASH_TYPE=mimc -e UNIQUE_LEAVES=true -v /tmp/starlight/zapps/Escrow/build/contracts:/app/build/contracts --network starlight --name timber-receiver -d timber
+$ docker run -e RPC_URL=ws://ganache:8545 -e DB_URL=mongodb://timber-mongo-sender:27017 -e HASH_TYPE=mimc -e UNIQUE_LEAVES=true -e ESCROW_SHIELD_ADDRESS=0x8C33fA7E8446F061f001c863840F291021414dF2 -v /tmp/starlight/zapps/Escrow/build/contracts:/app/build/contracts --network starlight --name timber-sender -d timber
+$ docker run -e RPC_URL=ws://ganache:8545 -e DB_URL=mongodb://timber-mongo-receiver:27017 -e HASH_TYPE=mimc -e UNIQUE_LEAVES=true -e ESCROW_SHIELD_ADDRESS=0x8C33fA7E8446F061f001c863840F291021414dF2 -v /tmp/starlight/zapps/Escrow/build/contracts:/app/build/contracts --network starlight --name timber-receiver -d timber
 ```
 
 - Start the app servers: Take the ERC20 and the EscrowShield contract addresses
