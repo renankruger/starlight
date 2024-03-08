@@ -28,7 +28,7 @@ trusted setup ceremony.
 
 ```console
 $ cd zapps/Escrow
-$ docker build -t starlight-mongo -f Dockerfile.mongo .
+$ docker build -t zapp-escrow -f Dockerfile .
 ```
 
 ## Timber

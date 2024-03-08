@@ -78,23 +78,36 @@ export class EncryptedDataEventListener {
           let balances_msgSender_newCommitment = poseidonHash([
             BigInt(self.ethAddressHash.hex(32)),
             BigInt(value.hex(32)),
-            BigInt(ownerPublicKey.hex(32)),
+            BigInt(self.publicKey.hex(32)),
             BigInt(salt.hex(32)),
           ]);
+          balances_msgSender_newCommitment = generalise(
+            balances_msgSender_newCommitment.hex(32),
+          );
 
-          await storeCommitment({
-            hash: balances_msgSender_newCommitment,
-            name: 'balances',
-            mappingKey: self.ethAddress.integer,
-            preimage: {
-              stateVarId: self.ethAddressHash,
-              value,
-              salt,
-              publicKey: self.publicKey,
-            },
-            secretKey: self.secretKey,
-            isNullified: false,
-          });
+          try {
+            await storeCommitment({
+              hash: balances_msgSender_newCommitment,
+              name: 'balances',
+              mappingKey: self.ethAddress.integer,
+              preimage: {
+                stateVarId: self.ethAddressHash,
+                value,
+                salt,
+                publicKey: self.publicKey,
+              },
+              secretKey: self.secretKey,
+              isNullified: false,
+            });
+            console.log(
+              'Added commitment',
+              balances_msgSender_newCommitment.hex(32),
+            );
+          } catch (e) {
+            if (e.toString().includes('E11000 duplicate key')) {
+              console.log('Commitment already exists');
+            }
+          }
         }
       });
   }
