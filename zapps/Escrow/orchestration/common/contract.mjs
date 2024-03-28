@@ -115,6 +115,8 @@ export async function registerKey(
     const key = config.web3.key;
     const signed = await web3.eth.accounts.signTransaction(txParams, key);
     const sendTxn = await web3.eth.sendSignedTransaction(signed.rawTransaction);
+    console.log("registerKey - sendTxn:", sendTxn);
+    
   }
   const keyJson = {
     secretKey: secretKey.integer,

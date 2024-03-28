@@ -3,11 +3,12 @@ import fs from 'fs';
 import utils from 'zkp-utils';
 import config from 'config';
 import { generalise } from 'general-number';
-import { getContractInstance } from './common/contract.mjs';
+import { getContractInstance, registerKey } from './common/contract.mjs';
 import { storeCommitment } from './common/commitment-storage.mjs';
 import { decrypt, poseidonHash } from './common/number-theory.mjs';
 
 const __dirname = new URL('.', import.meta.url).pathname;
+const keyDb = join(__dirname, 'common/db/key.json');
 
 export class EncryptedDataEventListener {
   constructor(web3) {
@@ -16,11 +17,21 @@ export class EncryptedDataEventListener {
 
   async init() {
     this.instance = await getContractInstance('EscrowShield');
+
+    // Read dbs for keys and previous commitment values:
+    console.log('+++++++ EncryptedDataEventListener - init - Reading key that supose to be at:', keyDb);
+    if (!fs.existsSync(keyDb)) {
+      console.log('+++++++ EncryptedDataEventListener - Registering key');
+      await registerKey(this.web3, utils.randomHex(31), 'EscrowShield', true);
+    }
+
     const { secretKey, publicKey } = JSON.parse(
-      fs.readFileSync(join(__dirname, './common/db/key.json')),
+      fs.readFileSync(keyDb),
     );
+
     this.secretKey = generalise(secretKey);
     this.publicKey = generalise(publicKey);
+    console.log(`EncryptedDataEventListener - init - Secret Key: ${secretKey} \n Public Key: ${publicKey}`);
 
     let stateVarId = 6;
     this.ethAddress = generalise(config.web3.options.defaultAccount);
@@ -31,6 +42,7 @@ export class EncryptedDataEventListener {
       ),
     );
     this.ethAddressHash = stateVarId;
+    console.log(`EncryptedDataEventListener - init - Eth Address Hash: ${this.ethAddressHash.hex(32)}`);
   }
 
   async start() {
@@ -61,6 +73,7 @@ export class EncryptedDataEventListener {
 
         const cipherText = eventData.returnValues.cipherText;
         const ephPublicKey = eventData.returnValues.ephPublicKey;
+        console.log(`EncryptedDataEventListener - event onData - Cipher Text: ${cipherText} - self.secretKey.integer: ${self.secretKey.integer} - ephemeral public key: ${ephPublicKey}`);
         const decrypted = decrypt(
           cipherText,
           self.secretKey.integer,
@@ -69,11 +82,10 @@ export class EncryptedDataEventListener {
 
         const ownerPublicKey = generalise(decrypted[0]);
         if (ownerPublicKey.integer === self.ethAddressHash.integer) {
-          console.log(
-            'The event is for a state owned by us, adding a commitment based on the decrypted value and salt',
-          );
           const value = generalise(decrypted[1]);
           const salt = generalise(decrypted[2]);
+          console.log(
+            'The event is for a state owned by us, adding a commitment based on the decrypted value and salt', value, salt);
 
           let balances_msgSender_newCommitment = poseidonHash([
             BigInt(self.ethAddressHash.hex(32)),
