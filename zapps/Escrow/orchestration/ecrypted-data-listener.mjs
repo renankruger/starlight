@@ -19,7 +19,7 @@ export class EncryptedDataEventListener {
     this.instance = await getContractInstance('EscrowShield');
 
     // Read dbs for keys and previous commitment values:
-    console.log('+++++++ EncryptedDataEventListener - init - Reading key that supose to be at:', keyDb);
+    console.log('+++++++ EncryptedDataEventListener - init - checking ZKP key pair existence at:', keyDb);
     if (!fs.existsSync(keyDb)) {
       console.log('+++++++ EncryptedDataEventListener - Registering key');
       await registerKey(this.web3, utils.randomHex(31), 'EscrowShield', true);
