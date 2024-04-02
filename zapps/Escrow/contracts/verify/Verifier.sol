@@ -27,6 +27,7 @@ pragma solidity ^0.8.0;
 
 import "./Ownable.sol";
 import "./Pairing.sol";
+import 'truffle/console.sol';
 
 contract Verifier is Ownable {
 
@@ -55,7 +56,9 @@ contract Verifier is Ownable {
   }
 
   function verify(uint256[] calldata _proof, uint256[] calldata _inputs, uint256[] calldata _vk) public returns (bool result) {
+      console.log('verifying inputs');
       validateInputs(_inputs);
+      console.log('verified inputs successfully');
       if (verificationCalculation(_proof, _inputs, _vk) == 0) {
           result = true;
       } else {
