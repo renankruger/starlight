@@ -35,11 +35,6 @@ export class DepositManager {
       _balances_msgSender_newOwnerPublicKey,
     );
 
-    // Read dbs for keys and previous commitment values:
-    if (!fs.existsSync(keyDb)) {
-      await registerKey(this.web3, utils.randomHex(31), 'EscrowShield', false);
-    }
-
     const keys = JSON.parse(
       fs.readFileSync(keyDb, 'utf-8', err => {
         console.log(err);

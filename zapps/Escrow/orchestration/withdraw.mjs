@@ -6,11 +6,7 @@ import fs from 'fs';
 import { join } from 'path';
 import { URL } from 'url';
 
-import {
-  getContractInstance,
-  getContractAddress,
-  registerKey,
-} from './common/contract.mjs';
+import { getContractInstance,  getContractAddress } from './common/contract.mjs';
 import {
   storeCommitment,
   getCommitmentsById,
@@ -50,10 +46,6 @@ export class WithdrawManager {
     );
 
     // Read dbs for keys and previous commitment values:
-    if (!fs.existsSync(keyDb)) {
-      await registerKey(this.web3, utils.randomHex(31), 'EscrowShield', false);
-    }
-
     const keys = JSON.parse(
       fs.readFileSync(keyDb, 'utf-8', err => {
         console.log(err);

@@ -6,11 +6,7 @@ import fs from 'fs';
 import { join } from 'path';
 import { URL } from 'url';
 
-import {
-  getContractInstance,
-  getContractAddress,
-  registerKey,
-} from './common/contract.mjs';
+import { getContractInstance, getContractAddress} from './common/contract.mjs';
 import {
   storeCommitment,
   getCommitmentsById,
@@ -60,14 +56,12 @@ export class TransferManager {
     );
 
     // Read dbs for keys and previous commitment values:
-
-    if (!fs.existsSync(keyDb))
-      await registerKey(utils.randomHex(31), 'EscrowShield', false);
     const keys = JSON.parse(
       fs.readFileSync(keyDb, 'utf-8', err => {
         console.log(err);
       }),
     );
+
     const secretKey = generalise(keys.secretKey);
     const publicKey = generalise(keys.publicKey);
 
@@ -172,10 +166,21 @@ export class TransferManager {
     );
 
     // read preimage for incremented state
-    balances_recipient_newOwnerPublicKey =
-      _balances_recipient_newOwnerPublicKey === 0
-        ? publicKey
-        : balances_recipient_newOwnerPublicKey;
+    // balances_recipient_newOwnerPublicKey =
+    //   _balances_recipient_newOwnerPublicKey === 0
+    //     ? publicKey
+    //     : balances_recipient_newOwnerPublicKey;
+    if (_balances_recipient_newOwnerPublicKey === 0) {
+      const pubKeyForReceid = await this.instance.methods.zkpPublicKeys(_recipient).call();
+      console.log("***** pubKeyForReceid ****:", pubKeyForReceid, " - _recipient:", _recipient);
+
+      balances_recipient_newOwnerPublicKey = await this.instance.methods.zkpPublicKeys(recipient.hex(20)).call();
+      balances_recipient_newOwnerPublicKey = generalise(balances_recipient_newOwnerPublicKey);
+      console.log("***** balances_recipient_newOwnerPublicKey ****:", balances_recipient_newOwnerPublicKey, " - recipient:", recipient, " - recipient.hex(20):", recipient.hex(20));
+      if (balances_recipient_newOwnerPublicKey.length === 0) {
+        throw new Error("WARNING: Public key for given  eth address not found.");
+      }
+    }
 
     let balances_recipient_stateVarId = 6;
 
@@ -202,6 +207,7 @@ export class TransferManager {
       'EscrowShield',
       generalise(balances_msgSender_0_oldCommitment._id).integer,
     );
+    console.log("TransferManager - balances_msgSender_witness_0: ", balances_msgSender_witness_0);
     balances_msgSender_witness_1 = await getMembershipWitness(
       'EscrowShield',
       generalise(balances_msgSender_1_oldCommitment._id).integer,
@@ -306,7 +312,7 @@ export class TransferManager {
 
       balances_recipient_newSalt.integer,
       balances_recipient_newCommitment.integer,
-      generalise(utils.randomHex(31)).integer,
+      secretKey.integer,
       [
         decompressStarlightKey(balances_recipient_newOwnerPublicKey)[0].integer,
         decompressStarlightKey(balances_recipient_newOwnerPublicKey)[1].integer,
